@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="initial-scale=1.0 width=device-width"/>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"> </script>
+	</head>
+	<h1>IOT USER DASHBOARD</h1>
+	<img id="mapImage" />
+	<script>
+	var refreshDt = latlng => {
+	uri="https://iklb33llg4.execute-api.us-east-1.amazonaws.com/Prod/mapimage/api?"+latlng+"&w="+1300+"&h="+600+"&z="+16
+	$.ajax ({
+	async:true,
+	method:'get',
+	url:uri,
+	success:(res,status,data)=> {
+	$('#mapImage').attr('src',`data:image/jpeg;base64,${res}`)
+	},
+	error:(res,status,data)=>{"err",console.log(res)}
+	});
+	};
+	var refreshDtsct= _ => {
+	uri="http://127.0.0.1:5000/getlatlng"
+	$.ajax ({
+	async:true,
+	method:'get',
+	url:uri,
+	success:(res,status,data)=> {
+	refreshDt(res)
+	},
+	error: (res, status, data) => { "err",console.log(res) }
+	});
+	};
+	refreshDtsct();
+	setInterval(_ => {
+	refreshDtsct()
+	},5000);
+	</script>
+	</body>
+	<html>
+	
+	
